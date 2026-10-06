@@ -1,0 +1,11 @@
+# Entorno local
+.venv/
+__pycache__/
+.DS_Store
+
+# Bases de datos generadas por el pipeline
+*.duckdb
+*.duckdb.wal
+
+# PDF
+*.pdf

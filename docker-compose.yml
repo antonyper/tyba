@@ -1,0 +1,8 @@
+services:
+  pipeline:
+    build: .
+    volumes:
+      # Cortes de entrada (solo lectura)
+      - ./data/raw:/app/data/raw:ro
+      # Base de datos destino: queda en el host para poder consultarla
+      - ./data/output:/app/data/output
