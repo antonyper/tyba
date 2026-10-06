@@ -1,4 +1,4 @@
-"""Pipeline de cortes diarios de movimientos -> DuckDB (SCD tipo 4).
+"""Pipeline Movimientos.
 
 Busca los parquet de data/raw, salta los que ya se cargaron con éxito y carga los pendientes
 en orden de corte. Cada carga: extract -> validate (calidad de datos) -> load_scd4.
@@ -6,7 +6,6 @@ en orden de corte. Cada carga: extract -> validate (calidad de datos) -> load_sc
 Uso:
     python src/pipeline.py
 """
-import hashlib
 import logging
 import sys
 from datetime import datetime
@@ -16,7 +15,7 @@ import duckdb
 
 from dq_rules import REQUIRED_COLUMNS, ROW_RULES
 from schema import ALL_DDL
-from utils import clean_text, content_hash, dq_normalize_date, dq_normalize_fund, dq_normalize_type
+from utils import clean_text, content_hash, dq_normalize_date, dq_normalize_fund, dq_normalize_type, file_checksum
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 RAW_DIR = BASE_DIR / "data" / "raw"
@@ -32,15 +31,6 @@ log = logging.getLogger("pipeline")
 
 class DataQualityError(Exception):
     """Una regla de severidad ERROR no se cumplió."""
-
-
-def file_checksum(path: Path) -> str:
-    """sha256 del archivo, leído por bloques para no cargarlo entero en memoria."""
-    digest = hashlib.sha256()
-    with path.open("rb") as file:
-        for block in iter(lambda: file.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def snapshot_date_of(con: duckdb.DuckDBPyConnection, path: Path):

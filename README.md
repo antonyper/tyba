@@ -326,6 +326,7 @@ Las funciones de normalización devuelven **expresiones SQL** que se ejecutan en
 | `dq_normalize_fund(column)` | Aplica `clean_text` y pasa a minúsculas. Une las 7 categorías de fondo que llegan con distintas mayúsculas y espacios. |
 | `dq_normalize_date(column)` | Convierte `date` de texto a `DATE` probando, en orden, los formatos de `DATE_FORMATS` (`yyyy-mm-dd` y `dd/mm/yyyy`). Usa `TRY_STRPTIME`, así que un valor que no encaja en ningún formato queda en `NULL` en vez de detener el pipeline. |
 | `content_hash(columns)` | Devuelve el `md5` del contenido de las columnas, serializadas como JSON. Es la base de `row_hash`. |
+| `file_checksum(path)` | Calcula el sha256 de un archivo, leyéndolo por bloques de 1 MB. Se guarda en `load_audit` para saber si un archivo ya se cargó. |
 
 Ejemplo de uso:
 

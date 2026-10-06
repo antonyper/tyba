@@ -1,3 +1,4 @@
+import hashlib
 from pathlib import Path
 
 import pandas as pd
@@ -47,3 +48,12 @@ def content_hash(columns: list[str]) -> str:
     """Hash md5 del contenido de las columnas. Usa JSON para distinguir NULL de texto y no mezclar campos."""
     fields = ", ".join(f"{column} := {column}" for column in columns)
     return f"md5(CAST(to_json(struct_pack({fields})) AS VARCHAR))"
+
+
+def file_checksum(path: Path) -> str:
+    """sha256 del archivo, leído por bloques para no cargarlo entero en memoria."""
+    digest = hashlib.sha256()
+    with path.open("rb") as file:
+        for block in iter(lambda: file.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
