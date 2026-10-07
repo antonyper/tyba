@@ -30,7 +30,7 @@ Pipeline que ingiere los cortes diarios de movimientos (`movimientos_dia_T.parqu
 
 ### Con Docker
 
-Requisito: Docker con Docker Compose (por ejemplo, Docker Desktop).
+Como se menciona en la prueba, se realia a traves de docker 
 
 ```bash
 docker compose up --build
@@ -82,7 +82,7 @@ python src/insights.py
 
 ### Consultar la base
 
-Con el pipeline detenido (DuckDB no permite abrir la base mientras otro proceso escribe en ella):
+Con el pipeline detenido:
 
 ```python
 import duckdb
